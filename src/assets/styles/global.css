@@ -1,0 +1,60 @@
+body {
+  background-color: #fff;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+.logo {
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  margin: 16px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.home .card_icon:hover {
+  color: #1890FF;
+}
+
+.right_container::-webkit-scrollbar {
+  display: none;
+}
+
+.d_f {
+  display: flex !important;
+}
+
+.f_c {
+  flex-direction: column !important;
+}
+
+.a_c {
+  align-items: center !important;
+}
+
+.mr_s {
+  margin-right: 10px;
+}
+
+.wrapper svg {
+  width: 25px;
+  height: 25px;
+}
+
+.wrapper div {
+  width: 25px;
+  height: 25px;
+}
+
+.wrapper path {
+  fill: white;
+}

@@ -1,0 +1,26 @@
+.login-box .ant-input,
+.login-box .ant-input-password {
+  height: 38px;
+  background-color: transparent;
+  border-color: #1890ff;
+  color: white;
+}
+.login-box .ant-input-password .ant-input {
+  height: 28px;
+}
+.login-box .ant-input-password-icon {
+  color: white;
+}
+.login-box .ant-input-password-icon:hover {
+  color: #1890ff;
+}
+.login-box .captchaBox {
+  display: flex;
+}
+.login-box .captchaBox .captchaImg {
+  margin-left: 20px;
+  cursor: pointer;
+}
+.login-box .login-btn {
+  height: 38px;
+}
