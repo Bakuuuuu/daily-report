@@ -1,8 +1,10 @@
-import { Button, Form, Input, Select, Card, Modal } from 'antd'
-import { DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Select, Modal } from 'antd'
 import dayjs from 'dayjs'
-import React, { useState, useEffect, Fragment } from 'react'
-
+import React, { useState, useEffect } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import update from 'immutability-helper'
+import DragItem from './component/DragItem'
 import {
   formOptions,
   saveTaskList,
@@ -20,7 +22,6 @@ type FormList = {
   target: string
   workContent: string
 }
-
 const App: React.FC = () => {
   const [formData, setFormData] = useState({
     list_id: '',
@@ -61,6 +62,17 @@ const App: React.FC = () => {
     target: [],
     task_type: [],
   })
+  const moveItem = (dragIndex: number, hoverIndex: number) => {
+    const draggedItem = listContent[dragIndex]
+    setListContent(
+      update(listContent, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, draggedItem],
+        ],
+      })
+    )
+  }
   const [listContent, setListContent] = useState<FormList[]>([])
   const onFinish = (values: any) => {
     if (!values.target) {
@@ -114,6 +126,7 @@ const App: React.FC = () => {
         formData[i] = value[i]
       }
     })
+    formData.list_id = ''
     const obj = JSON.parse(JSON.stringify(formData))
     setFormData(obj)
   }
@@ -235,73 +248,20 @@ const App: React.FC = () => {
               新的一天，开始今天的工作吧~
             </div>
           )}
-          {listContent.map((item, index) => {
-            return (
-              <Fragment key={item.list_id}>
-                <Card
-                  key={item.list_id}
-                  title={'任务列表'}
-                  hoverable={true}
-                  type={'inner'}
-                  extra={[
-                    <span
-                      className="card_icon"
-                      key={item.list_id + 'a'}
-                      style={{ fontSize: '18px', marginRight: '10px' }}
-                      onClick={() => edit(item)}
-                    >
-                      <EditOutlined />
-                    </span>,
-                    <span
-                      className="card_icon"
-                      key={item.list_id + 'b'}
-                      style={{ fontSize: '18px', marginRight: '10px' }}
-                      onClick={() => copy(item)}
-                    >
-                      <CopyOutlined />
-                    </span>,
-                    <span
-                      className="card_icon"
-                      key={item.list_id + 'c'}
-                      style={{ fontSize: '18px' }}
-                      onClick={() => {
-                        del(item)
-                      }}
-                    >
-                      <DeleteOutlined />
-                    </span>,
-                  ]}
-                  style={{ marginTop: '10px' }}
-                >
-                  {item.taskType ? (
-                    <div>
-                      <b>任务类型</b> : {item.taskType}
-                    </div>
-                  ) : null}
-                  {item.projectName ? (
-                    <div>
-                      <b>项目名称</b> : {item.projectName}
-                    </div>
-                  ) : null}
-                  {item.issue ? (
-                    <div>
-                      <b>ISSUE 号</b> : {item.issue}
-                    </div>
-                  ) : null}
-                  {item.target ? (
-                    <div>
-                      <b>支持对象</b> : {item.target}
-                    </div>
-                  ) : null}
-                  {item.workContent ? (
-                    <div>
-                      <b>工作内容</b> : {item.workContent}
-                    </div>
-                  ) : null}
-                </Card>
-              </Fragment>
-            )
-          })}
+          <DndProvider backend={HTML5Backend}>
+            {listContent.map((item, index) => (
+              <DragItem
+                key={item.list_id}
+                id={Number(item.list_id)}
+                index={index}
+                text={item}
+                moveItem={moveItem}
+                del={del}
+                edit={edit}
+                copy={copy}
+              />
+            ))}
+          </DndProvider>
         </div>
       </div>
     </div>

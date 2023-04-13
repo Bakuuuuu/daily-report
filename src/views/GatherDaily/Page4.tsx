@@ -1,9 +1,5 @@
 import { Radio, Space, DatePicker, Table, Button, message, Select } from 'antd'
-import type {
-  RadioChangeEvent,
-  DatePickerProps,
-  TimeRangePickerProps,
-} from 'antd'
+import type { RadioChangeEvent } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import ExportJsonExcel from 'js-export-excel'
 import dayjs from 'dayjs'
