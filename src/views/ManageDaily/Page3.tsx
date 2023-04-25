@@ -27,7 +27,8 @@ import {
 function Home() {
   useEffect(() => {
     setDateYear(moment().weekYear())
-    const firstDateInWeek = dayjs().day(1).format('YYYY-MM-DD')
+    const firstDateInWeek = moment().weekday(0).format('YYYY-MM-DD')
+    console.log(dayjs().day(0).format('YYYY-MM-DD'))
     setWeekDateListMethod(firstDateInWeek, true)
     getTaskList({ date: dayjs().format('YYYY-MM-DD') }).then((res) => {
       setData(res.data)
