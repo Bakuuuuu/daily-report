@@ -6,6 +6,15 @@ body{
 img{
   -webkit-user-drag: none;
 }
+h1{
+  font-size:2.1rem;
+}
+h2{
+  font-size: 1.8rem;
+}
+h3{
+  font-size: 1.5rem;
+}
 .logo {
   height: 32px;
   line-height: 32px;
@@ -22,6 +31,7 @@ img{
   background: #fff;
 }
 .home{
+  height: 100%;
   .card_icon:hover{
     color: #1890FF;
   }

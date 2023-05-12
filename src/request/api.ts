@@ -12,3 +12,5 @@ export const delTaskList = (params: object): Promise<commonReq> => request.post(
 export const updateTaskList = (params: object): Promise<commonReq> => request.post('/api/updateTaskList', params)
 export const getUserList = (): Promise<commonReq> => request.get('/api/getUserList')
 export const getWeekData = (params: object): Promise<commonReq> => request.get('/api/getWeekData', { params })
+export const saveMd = (params: object): Promise<commonReq> => request.post('/api/saveMd', params)
+export const getMd = (): Promise<commonReq> => request.get('/api/getMd')

@@ -3,7 +3,6 @@ import { useRoutes, useLocation, useNavigate } from 'react-router-dom'
 import { message } from 'antd'
 import { getUserInfo } from '@/request/api'
 import { useDispatch } from 'react-redux'
-import axios from 'axios'
 
 import router from './router'
 function ToLogin() {
@@ -51,9 +50,9 @@ function App() {
             localStorage.setItem('fakeToken', JSON.stringify(res.token))
             localStorage.removeItem('uuid')
             if (location.pathname === '/') {
-              navigateTo('/writeDaily')
+              navigateTo('/home')
             } else if (location.pathname === '/login') {
-              navigateTo('/writeDaily')
+              navigateTo('/home')
               message.success('登陆成功，欢迎！')
             } else if (location.pathname !== '/login') {
               navigateTo(location.pathname)

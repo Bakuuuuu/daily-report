@@ -1,6 +1,5 @@
 import style from './index.module.scss'
 import { Input, Space, Button, message, Spin } from 'antd'
-import 'antd/dist/antd.css'
 import './login.less'
 import { ChangeEvent, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'

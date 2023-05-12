@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Layout } from 'antd'
+import { Breadcrumb, Layout, Button } from 'antd'
 import { Outlet } from 'react-router-dom'
 import SliderMenu from '@/components/Menu'
 import { ReactSVG } from 'react-svg'
@@ -8,6 +8,11 @@ import reportSvg from '@/icons/report.svg'
 const { Header, Content, Footer, Sider } = Layout
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false)
+  const logout = () => {
+    localStorage.removeItem('my-token')
+    localStorage.removeItem('userInfo')
+    window.location.reload()
+  }
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
@@ -25,11 +30,33 @@ const App: React.FC = () => {
         <SliderMenu></SliderMenu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          <Breadcrumb style={{ margin: '0 16px', lineHeight: '64px' }}>
+        <Header
+          className="site-layout-background"
+          style={{
+            padding: 0,
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Breadcrumb
+            style={{
+              margin: '0 16px',
+              lineHeight: '64px',
+            }}
+          >
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
+          <div
+            style={{
+              margin: '0 16px',
+              lineHeight: '64px',
+            }}
+          >
+            <Button type="primary" onClick={logout}>
+              退出登录
+            </Button>
+          </div>
         </Header>
         <Content
           className="site-layout-background"
