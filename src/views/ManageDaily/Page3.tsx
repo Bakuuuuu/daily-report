@@ -621,6 +621,14 @@ function Home() {
         rowKey={(record) => {
           return record.list_id
         }}
+        onRow={(record) => {
+          return {
+            onDoubleClick: () => {
+              const str = `- ISSUE #${record.issue} ${record.workContent}`
+              navigator.clipboard.writeText(str)
+            },
+          }
+        }}
         bordered
         columns={columns}
         dataSource={data}
