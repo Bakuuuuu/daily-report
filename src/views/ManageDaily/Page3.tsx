@@ -28,7 +28,6 @@ function Home() {
   useEffect(() => {
     setDateYear(moment().weekYear())
     const firstDateInWeek = moment().weekday(0).format('YYYY-MM-DD')
-    console.log(dayjs().day(0).format('YYYY-MM-DD'))
     setWeekDateListMethod(firstDateInWeek, true)
     getTaskList({ date: dayjs().format('YYYY-MM-DD') }).then((res) => {
       setData(res.data)
@@ -148,6 +147,7 @@ function Home() {
   const [dateYear, setDateYear] = useState(0)
   const [activeWeekCount, setActiveWeekCount] = useState(moment().weeks())
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [weekDateModal, setWeekDateModal] = useState(false)
   const [formOption, setFormOption] = useState({
     project_name: [],
     target: [],
@@ -164,6 +164,7 @@ function Home() {
   })
   const [submitType, setSubmitType] = useState('')
   const [weekDateList, setWeekDateList] = useState([''])
+  const [weekList, setWeekList] = useState<Array<DataType>>([])
   const totalWeekCount = moment().isoWeeksInYear()
   const currentWeekCount = moment().weeks()
   const [form] = Form.useForm()
@@ -223,6 +224,7 @@ function Home() {
       !dayjs(item.date).isBefore(dayjs(currentDate)) &&
       !dayjs(item.date).isSame(dayjs(currentDate))
     ) {
+      message.warning('最多只能查看当日内容')
       return
     }
     if (index === currentTabIndex || timer) return
@@ -344,53 +346,10 @@ function Home() {
   const exportData = () => {
     getWeekData({ start: weekDateList[0], end: weekDateList[6] }).then(
       (res) => {
-        if (res.data.length === 0) {
-          return message.error('没有数据可以导出')
-        }
-        if (res.code === 200) {
-          const datas = res.data
-          var option = { fileName: '', datas: [{}] }
-          let dataTable: Array<ExportType> = []
-          if (datas) {
-            datas.map((item: ExportType) => {
-              let obj = {
-                taskType: item.taskType,
-                projectName: item.projectName,
-                issue: item.issue,
-                target: item.target,
-                workContent: item.workContent,
-              }
-              dataTable.push(obj)
-              return dataTable
-            })
-          }
-          option.fileName = '周报内容'
-          option.datas = [
-            {
-              sheetData: dataTable,
-              sheetName: 'sheet',
-              columnWidths: [5, 5, 5, 5, 20],
-              sheetFilter: [
-                'taskType',
-                'projectName',
-                'issue',
-                'target',
-                'workContent',
-              ],
-              sheetHeader: [
-                '任务类型',
-                '项目名称',
-                'ISSUE 号',
-                '支持对象',
-                '工作内容',
-              ],
-            },
-          ]
-          var toExcel = new ExportJsonExcel(option)
-          toExcel.saveExcel()
-        }
+        setWeekList(res.data)
       }
     )
+    setWeekDateModal(true)
   }
   const handleOk = () => {
     form
@@ -624,8 +583,13 @@ function Home() {
         onRow={(record) => {
           return {
             onDoubleClick: () => {
-              const str = `- ISSUE #${record.issue} ${record.workContent}`
-              navigator.clipboard.writeText(str)
+              const str = `ISSUE #${record.issue} ${record.workContent}`
+              const tempInput = document.createElement('textarea')
+              tempInput.value = str
+              document.body.appendChild(tempInput)
+              tempInput.select()
+              document.execCommand('copy')
+              document.body.removeChild(tempInput)
             },
           }
         }}
@@ -683,6 +647,24 @@ function Home() {
             <Input.TextArea rows={8} placeholder="请输入工作内容" />
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="周报内容"
+        open={weekDateModal}
+        onOk={() => {
+          setWeekDateModal(false)
+        }}
+        onCancel={() => {
+          setWeekDateModal(false)
+        }}
+        width="600px"
+        maskClosable={false}
+        okText="确认"
+        cancelText="取消"
+      >
+        {weekList.map((i, n) => {
+          return <div key={n}>{`- ISSUE #${i.issue} ${i.workContent}`}</div>
+        })}
       </Modal>
     </div>
   )

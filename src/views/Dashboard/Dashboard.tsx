@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Breadcrumb, Layout, Button } from 'antd'
 import { Outlet } from 'react-router-dom'
 import SliderMenu from '@/components/Menu'
@@ -8,23 +8,49 @@ import reportSvg from '@/icons/report.svg'
 const { Header, Content, Footer, Sider } = Layout
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false)
+  const [icon, setIcon] = useState(false)
   const logout = () => {
     localStorage.removeItem('my-token')
     localStorage.removeItem('userInfo')
     window.location.reload()
   }
+  useEffect(() => {
+    setTimeout(() => {
+      const path = document.querySelector('.logo-icon path') as SVGPathElement
+      path.style.setProperty('--l', path.getTotalLength() / 2.8 + '')
+    }, 500)
+  })
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
         collapsible
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
+        onCollapse={(value, type) => {
+          if (!value) {
+            setTimeout(() => {
+              setIcon(value)
+            }, 150)
+          } else {
+            setIcon(value)
+          }
+          setCollapsed(value)
+        }}
       >
         <div className="logo">
-          {collapsed ? (
-            <ReactSVG className="wrapper" src={reportSvg}></ReactSVG>
+          {icon ? (
+            <ReactSVG className="logo-icon" src={reportSvg}></ReactSVG>
           ) : (
-            '日报管理'
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              <ReactSVG className="logo-icon" src={reportSvg}></ReactSVG>
+              <span>日报管理</span>
+            </div>
           )}
         </div>
         <SliderMenu></SliderMenu>

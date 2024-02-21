@@ -1,20 +1,26 @@
-$color:#fff;
-body{
+$color: #fff;
+
+body {
   background-color: $color;
   // user-select: none;
 }
-img{
+
+img {
   -webkit-user-drag: none;
 }
-h1{
-  font-size:2.1rem;
+
+h1 {
+  font-size: 2.1rem;
 }
-h2{
+
+h2 {
   font-size: 1.8rem;
 }
-h3{
+
+h3 {
   font-size: 1.5rem;
 }
+
 .logo {
   height: 32px;
   line-height: 32px;
@@ -30,35 +36,56 @@ h3{
 .site-layout .site-layout-background {
   background: #fff;
 }
-.home{
+
+.home {
   height: 100%;
-  .card_icon:hover{
+
+  .card_icon:hover {
     color: #1890FF;
   }
 }
+
 .right_container::-webkit-scrollbar {
   display: none;
 }
+
 .d_f {
   display: flex !important;
 }
+
 .f_c {
   flex-direction: column !important;
 }
+
 .a_c {
   align-items: center !important;
 }
-.mr_s {margin-right: 10px;}
 
-.wrapper svg  {
-  width: 25px;
-  height: 25px;
-}
-.wrapper div  {
-  width: 25px;
-  height: 25px;
+.mr_s {
+  margin-right: 10px;
 }
 
-.wrapper path {
-  fill: white;
+.logo-icon svg {
+  width: 35px;
+  height: 35px;
+}
+
+.logo-icon div {
+  width: 35px;
+  height: 35px;
+}
+
+.logo-icon path {
+  fill: none;
+  stroke: white;
+  stroke-width: 40;
+  stroke-dasharray: var(--l);
+  stroke-dashoffset: var(--l);
+  animation: stroke 5s infinite forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
